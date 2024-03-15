@@ -1,0 +1,17 @@
+FROM python:3.8
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+RUN python -m nltk.downloader stopwords
+
+# Copy the rest
+COPY validators/GruValidation.py /app/
+
+# ENV TF_CPP_MIN_LOG_LEVEL=0
+
+CMD ["python", "-u", "GruValidation.py"]

@@ -1,0 +1,34 @@
+# # tensorflow-cpu==2.13.1
+# pandas==2.0.2
+# numpy==1.23.5
+# tensorflow==2.9.2
+# scikit-learn==1.3.2
+# nltk==3.8.1
+# matplotlib==3.7.4
+# seaborn==0.13.2
+# tqdm==4.66.1
+# optuna==3.5.0
+# pymorphy2==0.9.1
+# transformers==4.37.2
+# ## torch==1.11.0
+# gradio
+# flask
+# regex
+
+# tensorflow-cpu==2.13.1
+pandas==2.0.2
+numpy==1.23.5
+tensorflow==2.9.2
+scikit-learn==1.3.2
+nltk==3.8.1
+matplotlib==3.7.4
+seaborn==0.13.2
+tqdm==4.66.1
+optuna==3.5.0
+pymorphy2==0.9.1
+transformers==4.37.2
+## torch==1.11.0
+gradio
+flask
+regex
+tokenizers==0.15.1

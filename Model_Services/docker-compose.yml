@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  rubert_validation:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile_validation_rubert
+    volumes:
+      - ./models_data_180k:/app/models_data_180k
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+
+  gpt_validation:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile_validation_gpt
+    volumes:
+      - ./models_data_180k:/app/models_data_180k
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+
+  cnngru_validation:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile_validation_cnngru
+    volumes:
+      - ./models_data_180k:/app/models_data_180k
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+
+  gru_validation:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile_validation_gru
+    volumes:
+      - ./models_data_180k:/app/models_data_180k
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+
+  bilstm_validation:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile_validation_bilstm
+    volumes:
+      - ./models_data_180k:/app/models_data_180k
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+
+  gradio_interface:
+    build:
+      context: .
+      dockerfile: dockerfiles/Dockerfile_gradio 
+    ports:
+      - "7860:7860"
+    depends_on:
+      - rubert_validation
+      - gpt_validation
+      - cnngru_validation
+      - gru_validation
+      - bilstm_validation
+
+volumes:
+  model_data:

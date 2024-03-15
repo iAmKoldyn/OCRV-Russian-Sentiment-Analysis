@@ -1,0 +1,18 @@
+FROM python:3.8
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# PyTorch install them separately
+RUN pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --extra-index-url https://download.pytorch.org/whl/cpu
+
+# Copy the rest
+COPY validators/RuGPTValidation.py /app/
+
+# ENV TF_CPP_MIN_LOG_LEVEL=0
+
+CMD ["python", "-u", "RuGPTValidation.py"]

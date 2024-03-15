@@ -1,0 +1,20 @@
+# Ignore everything in the models_data_180k directory
+models_data_180k/*
+
+# But keep the directory itself and the .gitkeep file
+!models_data_180k/.gitkeep
+
+# Ignore IDE related files like .idea
+.idea/
+
+# Ignore Python byte-compiled files
+*.pyc
+
+# Ignore __pycache__ directories
+__pycache__/
+
+# Ignore zip archives
+*.zip
+
+# Ignore other files that are not necessary to be tracked
+# Add other file patterns as necessary

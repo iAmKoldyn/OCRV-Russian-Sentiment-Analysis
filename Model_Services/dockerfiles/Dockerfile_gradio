@@ -1,0 +1,15 @@
+FROM python:3.8
+
+WORKDIR /app
+
+# Copy requirements.txt from the root directory
+COPY requirements.txt /app/
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy gradio_app.py from the interface directory
+COPY interface/gradio_app.py /app/
+
+EXPOSE 7860
+
+CMD ["python", "-u", "gradio_app.py"]
