@@ -1,4 +1,4 @@
-# README for Sentiment Analysis Service Setup
+# Sentiment Analysis Service Setup
 
 ## Datasets
 
