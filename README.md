@@ -1,3 +1,6 @@
+# Project Description
+Development of software for assessing the emotional state of Russian Railways employees using Python and sentiment analysis.
+
 # Sentiment Analysis Service Setup
 
 ## Datasets
