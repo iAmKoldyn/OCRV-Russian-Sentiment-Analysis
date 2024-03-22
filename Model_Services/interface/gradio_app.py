@@ -2,6 +2,14 @@ import gradio as gr
 import requests
 import re
 
+MODEL_CHOICES = [
+    'Rubert Sentiment Model',
+    'RuGpt Sentiment Model',
+    'CnnGru Sentiment Model',
+    'Gru Sentiment Model',
+    'Bilstm Sentiment Model'
+]
+
 def send_to_validator(text, model_choice):
     if not text.strip():
         return "Please enter some text to analyze."
@@ -12,7 +20,7 @@ def send_to_validator(text, model_choice):
     if not re.search(r'[А-Яа-я]', text):
         return "Please enter text in Russian."
 
-    if not model_choice or model_choice not in ['Rubert Sentiment Model','RuGpt Sentiment Model', 'CnnGru Sentiment Model', 'Gru Sentiment Model', 'Bilstm Sentiment Model']:
+    if model_choice not in MODEL_CHOICES:
         return "Please select a valid model."
 
     validators = {
@@ -20,8 +28,7 @@ def send_to_validator(text, model_choice):
         'RuGpt Sentiment Model': "http://gpt_validation:5001/predict",
         'CnnGru Sentiment Model': "http://cnngru_validation:5002/predict",
         'Gru Sentiment Model': "http://gru_validation:5010/predict",
-        'Bilstm Sentiment Model': "http://bilstm_validation:5005/predict",
-
+        'Bilstm Sentiment Model': "http://bilstm_validation:5005/predict"
     }
     url = validators.get(model_choice)
 
@@ -34,7 +41,7 @@ def send_to_validator(text, model_choice):
 def main():
     text_input = gr.components.Textbox(lines=2, placeholder="Type your text here...", label="Input Text")
     model_dropdown = gr.components.Dropdown(
-        choices=['Rubert Sentiment Model','RuGpt Sentiment Model', 'CnnGru Sentiment Model', 'Gru Sentiment Model', 'Bilstm Sentiment Model'],
+        choices=MODEL_CHOICES,
         label="Choose Model"
     )
 
@@ -45,7 +52,7 @@ def main():
         title="Text Sentiment Analysis",
         description="Enter text to analyze sentiment and choose a model."
     )
-    iface.launch(server_name='0.0.0.0', server_port=7860)
+    iface.launch(server_name='0.0.0.0', server_port=7860, share=True)
 
 if __name__ == "__main__":
     main()
