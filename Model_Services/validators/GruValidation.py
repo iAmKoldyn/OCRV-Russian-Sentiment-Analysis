@@ -20,8 +20,8 @@ def preprocess_text(text):
     stop_words = stopwords.words('russian')
     stemmer = SnowballStemmer('russian')
     text = text.lower()
-    text = re.sub(r'[^\w\s]', '', text)
-    text = re.sub(r'\d+', '', text)
+    text = re.sub(r'[^\w\s]', '', text) # Removing special chars and punctuation
+    text = re.sub(r'\d+', '', text) # Removing digits
     words = text.split()
     words = [word for word in words if word not in stop_words]
     words = [stemmer.stem(word) for word in words]
