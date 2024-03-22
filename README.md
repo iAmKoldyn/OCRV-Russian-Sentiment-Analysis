@@ -1,7 +1,7 @@
-# Project Description
-Development of software for assessing the emotional state of Russian Railways employees using Python and sentiment analysis.
-
 # Sentiment Analysis Service Setup
+
+## Project Description
+Development of software for assessing the emotional state of Russian Railways employees using Python and sentiment analysis.
 
 ## Datasets
 
@@ -12,6 +12,28 @@ To train the sentiment analysis models, use the following datasets:
 - **Railway Sentiment (10k records)**: Access the dataset [here](https://github.com/Kbnch7/railsent/blob/main/output.csv).
 
 ## Training the Models
+
+Before starting the model training process, set up a virtual environment and install the required dependencies:
+
+1. Create a virtual environment in your project directory:
+   ```
+   python -m venv venv
+   ```
+
+2. Activate the virtual environment:
+   - On Windows:
+     ```
+     .\venv\Scripts\activate
+     ```
+   - On Unix or MacOS:
+     ```
+     source venv/bin/activate
+     ```
+
+3. Install the required libraries and frameworks from `requirements.txt`:
+   ```
+   pip install -r requirements.txt
+   ```
 
 Training time and resource consumption vary depending on the model and training method (CPU or GPU). For accelerated training, install and configure the following:
 
