@@ -19,7 +19,7 @@ def preprocess_text(text):
     return text
 
 def predict_sentiment(text):
-    device = torch.device("cpu" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cpu" if torch.cuda.is_available() else "cuda")
     model.to(device)
     model.eval()
 
