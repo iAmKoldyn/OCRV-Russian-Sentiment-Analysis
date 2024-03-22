@@ -35,8 +35,9 @@ import nltk
 from sklearn.metrics import confusion_matrix, classification_report
 import matplotlib.pyplot as plt
 import seaborn as sns
-# from transformers import BertTokenizer
 
+
+# Configure GPU for training (if available)
 def configure_gpu():
     gpus = tf.config.list_physical_devices('GPU')
     if gpus:
@@ -49,9 +50,11 @@ def configure_gpu():
     else:
         print("No GPU, using CPU.")
 
+# Download NLTK data for text preprocessing
 def download_nltk_data():
     nltk.download('stopwords', quiet=True)
 
+# Function to preprocess text data
 def preprocess_text(text):
     stop_words = stopwords.words('russian')
     stemmer = SnowballStemmer('russian')
@@ -63,6 +66,7 @@ def preprocess_text(text):
     words = [stemmer.stem(word) for word in words]
     return ' '.join(words)
 
+# Function to load and preprocess the dataset
 def load_and_preprocess_data(filepath):
     df = pd.read_csv(filepath)
     df['processed_text'] = df['text'].apply(preprocess_text)
@@ -70,6 +74,7 @@ def load_and_preprocess_data(filepath):
 
 
 
+# Define the custom GRU model class
 class CustomGRUModel(Model):
     def __init__(self, vocab_size, embedding_dim, input_length, gru_units, dropout_rate, num_classes):
         super(CustomGRUModel, self).__init__()
@@ -77,32 +82,40 @@ class CustomGRUModel(Model):
         self.spatial_dropout = SpatialDropout1D(dropout_rate)
         self.bidirectional_gru = Bidirectional(GRU(gru_units, return_sequences=False))
         self.dense = Dense(num_classes, activation='softmax')
-
+        
+    # The call method defines the forward pass of the model.
     def call(self, inputs):
         x = self.embedding(inputs)
         x = self.spatial_dropout(x)
         x = self.bidirectional_gru(x)
         return self.dense(x)
-
+        
+# Helper function to encode texts using the tokenizer.
 def encode_texts(tokenizer, texts):
     return tokenizer(texts, padding='max_length', truncation=True, max_length=200, return_tensors="np")
 
-
+# Training and evaluation function for the model.
 def train_and_evaluate_model(X_train, y_train, X_test, y_test):
+    # Instantiate the model with the given hyperparameters.
     model = CustomGRUModel(vocab_size=5000, embedding_dim=128, input_length=200, gru_units=64, dropout_rate=0.2, num_classes=3)
     model.build(input_shape=(None, 200))
     model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    model.summary()
+    model.summary()  # Print a summary of the model.
+    # Callback for early stopping to prevent overfitting
     early_stopping = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
+    # Train the model using the training data and validation data    
     model.fit(X_train, y_train, validation_data=(X_test, y_test), epochs=10, batch_size=64, callbacks=[early_stopping], verbose=2)
+    # Evaluate the model's performance on the test set    
     loss, accuracy = model.evaluate(X_test, y_test, verbose=2)
     print(f'Test Accuracy: {accuracy}')
+    # Use the trained model to predict the test set   
     predictions = model.predict(X_test, verbose=2)
     return model, y_test, predictions
 
 def main():
-    configure_gpu()
-    download_nltk_data()
+    configure_gpu()  # Set up GPU configuration
+    download_nltk_data() # Ensure required NLTK data is downloaded
+    # Load and preprocess the training data
     filepath = 'train_2.csv'
     df = load_and_preprocess_data(filepath)
 
@@ -112,7 +125,7 @@ def main():
     sequences = tokenizer.texts_to_sequences(df['processed_text'])
     padded_sequences = pad_sequences(sequences, maxlen=200)
 
-    # Prepare labels
+    # Encode labels into a binary (one-hot) representation
     encoder = LabelEncoder()
     df['sentiment_numeric'] = encoder.fit_transform(df['sentiment'])
     labels = to_categorical(df['sentiment_numeric'])
